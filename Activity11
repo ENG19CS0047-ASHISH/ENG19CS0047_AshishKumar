@@ -1,0 +1,113 @@
+#include<stdio.h>
+struct Student{
+char name[100];
+int marks[100];
+char grade;
+float score;
+};
+
+typedef struct Student student;
+
+struct gradeBook{
+	char sub[100];
+	int no_weights;
+int no_students;
+float weights[100];
+student students[100];
+
+
+};
+typedef struct gradeBook  gradebook;
+
+void no_of_books(int *n)
+{
+printf("Enter the no of gradebooks \n");
+scanf("%d",n);
+
+}
+//1 gradebook
+void inp(gradebook *gb){
+printf("Enter the name of the subs:\n");
+scanf("%s",gb->sub);
+//printf("Enter no. of weights :");
+scanf("%d",&gb->no_weights);
+//printf("Enter no. of students");
+scanf("%d",&gb->no_students);
+for(int i=0;i<gb->no_weights;i++){
+//printf("Enter the no. of weights");
+scanf("%f",&gb->weights[i]);
+}
+
+for(int i=0;i<gb->no_students;i++)
+{
+//printf("Enter student name:\n");
+scanf("%s",gb->students[i].name);
+for(int j=0;j<gb->no_weights;j++){
+//printf("Enter the marks:");
+scanf("%d",&gb->students[i].marks[j]);
+}
+}
+
+}
+//n gradebooks
+void inp_n(int n,gradebook nGb[]){
+for(int i=0;i<n;i++){
+inp(&nGb[i]);
+}
+}
+void compute(gradebook *gb)
+{
+for(int i=0;i<gb->no_students;i++)
+{
+float avg=0.0;
+gb->students[i].score=0.0;
+for(int j=0;j<gb->no_weights;j++){
+gb->students[i].score+=(gb->students[i].marks[j]*gb->weights[j]);
+avg+=gb->weights[j];
+}
+gb->students[i].score/=avg;
+if(gb->students[i].score>=90&&gb->students[i].score<=100)
+gb->students[i].grade='A';
+else if(gb->students[i].score>=80&&gb->students[i].score<90)
+gb->students[i].grade='B';
+else if(gb->students[i].score>=70&&gb->students[i].score<80)
+gb->students[i].grade='C';
+else if(gb->students[i].score>=60&&gb->students[i].score<70)
+gb->students[i].grade='D';
+else if(gb->students[i].score>=50&&gb->students[i].score<60)
+gb->students[i].grade='E';
+else
+gb->students[i].grade='F';
+
+
+}
+}
+//n compute
+void compute_n(int n,gradebook nGb[]){
+for(int i=0;i<n;i++){
+compute(&nGb[i]);
+}
+}
+void oup(gradebook *gb){
+printf("%s \n",gb->sub);//(*gb).sub
+for(int i=0;i<gb->no_students;i++)
+{
+printf("%s\t" "%.2f\t" "%c\n",gb->students[i].name,gb->students[i].score,gb->students[i].grade);
+}
+}
+//n oup
+void oup_n(int n,gradebook nGb[]){
+for(int i=0;i<n;i++){
+oup(&nGb[i]);
+}
+}
+int main(){
+int n;
+no_of_books(&n);
+gradebook nGb[100];
+
+inp_n(n,nGb);
+compute_n(n,nGb);
+oup_n(n,nGb);
+return 0;
+}
